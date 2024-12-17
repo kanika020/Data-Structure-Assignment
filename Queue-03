@@ -1,0 +1,64 @@
+#include <stdio.h>
+
+#define QUEUE_SIZE 10
+
+// Define the structure for the queue
+typedef struct {
+    int data[QUEUE_SIZE];
+    int front;
+    int rear;
+} Queue;
+
+// Initialize the queue
+void init(Queue *q) {
+    q->front = 0;
+    q->rear = 0;
+}
+
+// Check if the queue is empty
+int isEmpty(Queue *q) {
+    return (q->front == q->rear);
+}
+
+// Check if the queue is full
+int isFull(Queue *q) {
+    return ((q->rear + 1) % QUEUE_SIZE == q->front);
+}
+
+// Enqueue operation (add an element to the queue)
+void enqueue(Queue *q, int value) {
+    if (isFull(q)) {
+        printf("Queue is full\n");
+    } else {
+        q->data[q->rear] = value;
+        q->rear = (q->rear + 1) % QUEUE_SIZE; // Circular increment of rear pointer
+    }
+}
+// Dequeue operation (remove an element from the queue)
+int dequeue(Queue *q) {
+    if (isEmpty(q)) {
+        printf("Queue is empty\n");
+        return -1; // Indicate empty queue with an error value
+    } else {
+        int value = q->data[q->front];
+        q->front = (q->front + 1) % QUEUE_SIZE; // Circular increment of front pointer
+        return value;
+    }
+}
+
+int main() {
+    Queue q;
+    init(&q); // Initialize the queue
+
+    // Enqueue some elements
+    enqueue(&q, 1);
+    enqueue(&q, 2);
+    enqueue(&q, 3);
+
+    // Dequeue and display the results
+    printf("Dequeued: %d\n", dequeue(&q));
+    printf("Dequeued: %d\n", dequeue(&q));
+    printf("Dequeued: %d\n", dequeue(&q));
+
+    return 0;
+}
